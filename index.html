@@ -1,348 +1,84 @@
+
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UFO DASH</title>
+<title>UFO DASH - UNLOCK DYNAMIC BG</title>
 <style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #050816;
-  font-family: Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-canvas {
-  width: min(100vw, 1100px);
-  aspect-ratio: 1100/620;
-  background: #080b18;
-  cursor: pointer;
-}
-/* ================= MODE ================= */
-#modeSelect {
-  position: fixed;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  display: flex;
-  gap: 7px;
-  width: max-content;
-  max-width: 96vw;
-  justify-content: center;
-  transition: .2s;
-}
-.modeButton {
-  padding: 9px 12px;
-  border: 2px solid #36efff;
-  border-radius: 8px;
-  background: #08142b;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(54, 239, 255, .35);
-  transition: .15s;
-}
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #050816; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; }
+canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18; cursor: pointer; }
+#modeSelect { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 7px; width: max-content; max-width: 96vw; justify-content: center; transition: .2s; }
+.modeButton { padding: 9px 12px; border: 2px solid #36efff; border-radius: 8px; background: #08142b; color: white; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(54, 239, 255, .35); transition: .15s; }
 .modeButton:hover { background: #12345a; }
-.modeButton.active {
-  background: #36efff;
-  color: #050816;
-  box-shadow: 0 0 12px #36efff, 0 0 25px rgba(54, 239, 255, .7);
-}
-
-/* ================= HÀNG CÀI ĐẶT ================= */
-#settingsRow {
-  position: fixed;
-  top: 65px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-/* ================= SPEED DROPDOWN ================= */
-#speedSelect {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-#speedMainBtn {
-  padding: 0 14px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  border: 2px solid #36efff;
-  border-radius: 8px;
-  background: #08142b;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(54, 239, 255, .35);
-  transition: .15s;
-  box-sizing: border-box;
-}
-#speedMainBtn:hover { background: #12345a; }
-#speedMenu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  margin-top: 6px;
-  background: rgba(5, 12, 30, .96);
-  border: 1px solid #36efff;
-  border-radius: 8px;
-  padding: 6px;
-  box-shadow: 0 0 15px rgba(54, 239, 255, .3);
-  gap: 5px;
-  flex-wrap: wrap;
-  width: 220px;
-  justify-content: center;
-}
-#speedSelect.open #speedMenu { display: flex; }
-.speedButton {
-  padding: 6px 10px;
-  border: 1px solid #36efff;
-  border-radius: 5px;
-  background: #08142b;
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .12s;
-}
-.speedButton:hover { background: #12345a; }
-.speedButton.active {
-  background: #36efff;
-  color: #050816;
-  box-shadow: 0 0 7px #36efff;
-}
-
-/* ================= BACKGROUND DROPDOWN ================= */
-#bgSelect {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-#bgMainBtn {
-  padding: 0 14px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  border: 2px solid #36efff;
-  border-radius: 8px;
-  background: #08142b;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(54, 239, 255, .35);
-  transition: .15s;
-  box-sizing: border-box;
-}
-#bgMainBtn:hover { background: #12345a; }
-#bgMenu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  margin-top: 6px;
-  background: rgba(5, 12, 30, .96);
-  border: 1px solid #36efff;
-  border-radius: 8px;
-  padding: 6px;
-  box-shadow: 0 0 15px rgba(54, 239, 255, .3);
-  gap: 6px;
-  flex-direction: column;
-  width: 175px;
-}
-#bgSelect.open #bgMenu { display: flex; }
-.bgButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 8px;
-  border: 1px solid #36efff;
-  border-radius: 6px;
-  background: #08142b;
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .12s;
-}
-.bgButton:hover { background: #12345a; }
-.bgButton.active {
-  background: #36efff;
-  color: #050816;
-  box-shadow: 0 0 7px #36efff;
-}
-.bgThumb {
-  width: 28px;
-  height: 18px;
-  border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-sizing: border-box;
-}
-.thumbDefault {
-  background: linear-gradient(180deg, #111d4a 0%, #050816 100%);
-}
-.thumbStars {
-  background: #080b18;
-  background-image: radial-gradient(#ffffff 1px, transparent 0);
-  background-size: 5px 5px;
-}
-.thumbDynamic {
-  background: linear-gradient(90deg, #111d4a 33%, #4a0e2e 33%, #4a0e2e 66%, #002b11 66%);
-}
-
-/* ================= COLOR PICKER ================= */
-#colorSelectContainer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(8, 20, 43, 0.9);
-  padding: 0 12px;
-  height: 38px;
-  border: 2px solid #36efff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(54, 239, 255, .35);
-  box-sizing: border-box;
-}
-.colorLabel {
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-}
-#ufoColorPicker {
-  width: 32px;
-  height: 24px;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-/* ================= MUSIC ================= */
-#musicButton {
-  position: fixed;
-  top: 115px;
-  right: 18px;
-  z-index: 20;
-  padding: 12px 18px;
-  border: 2px solid #36efff;
-  border-radius: 10px;
-  background: #08142b;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(54, 239, 255, .5);
-}
-#musicStatus {
-  position: fixed;
-  top: 162px;
-  right: 18px;
-  z-index: 20;
-  color: #9eefff;
-  font-size: 13px;
-  text-align: right;
-}
+.modeButton.active { background: #36efff; color: #050816; box-shadow: 0 0 12px #36efff, 0 0 25px rgba(54, 239, 255, .7); }
+#settingsRow { position: fixed; top: 65px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; justify-content: center; width: 100%; }
+#speedSelect, #bgSelect { position: relative; display: flex; flex-direction: column; align-items: center; }
+#speedMainBtn, #bgMainBtn, #antiLagBtn { padding: 0 14px; height: 38px; display: flex; align-items: center; border: 2px solid #36efff; border-radius: 8px; background: #08142b; color: white; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(54, 239, 255, .35); transition: .15s; box-sizing: border-box; }
+#speedMainBtn:hover, #bgMainBtn:hover, #antiLagBtn:hover { background: #12345a; }
+#antiLagBtn { border-color: #ff35dc; box-shadow: 0 0 10px rgba(255, 53, 220, .35); }
+#antiLagBtn.active { background: #ff35dc; color: #050816; box-shadow: 0 0 12px #ff35dc; cursor: not-allowed; }
+#speedMenu, #bgMenu { display: none; position: absolute; top: 100%; margin-top: 6px; background: rgba(5, 12, 30, .96); border: 1px solid #36efff; border-radius: 8px; padding: 6px; box-shadow: 0 0 15px rgba(54, 239, 255, .3); gap: 5px; flex-wrap: wrap; justify-content: center; }
+#speedSelect.open #speedMenu, #bgSelect.open #bgMenu { display: flex; }
+#speedMenu { width: 220px; }
+#bgMenu { width: 200px; flex-direction: column; }
+.speedButton, .bgButton { padding: 6px 10px; border: 1px solid #36efff; border-radius: 5px; background: #08142b; color: white; font-size: 11px; font-weight: bold; cursor: pointer; transition: .12s; }
+.speedButton:hover, .bgButton:hover { background: #12345a; }
+.speedButton.active, .bgButton.active { background: #36efff; color: #050816; box-shadow: 0 0 7px #36efff; }
+.bgButton { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 5px 8px; border-radius: 6px; }
+.bgThumb { width: 26px; height: 18px; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.4); box-sizing: border-box; flex-shrink: 0; }
+.thumbDefault { background: linear-gradient(180deg, #111d4a 0%, #050816 100%); }
+.thumbStars { background: #080b18; background-image: radial-gradient(#ffffff 1px, transparent 0); background-size: 5px 5px; }
+.thumbDynamic { background: linear-gradient(90deg, #111d4a 33%, #4a0e2e 33%, #4a0e2e 66%, #002b11 66%); }
+.bgName { font-size: 11px; flex-grow: 1; text-align: left; }
+.bgLock { font-size: 10px; font-weight: bold; }
+#colorSelectContainer { display: flex; align-items: center; gap: 8px; background: rgba(8, 20, 43, 0.9); padding: 0 12px; height: 38px; border: 2px solid #36efff; border-radius: 8px; box-shadow: 0 0 10px rgba(54, 239, 255, .35); box-sizing: border-box; }
+.colorLabel { color: white; font-size: 12px; font-weight: bold; }
+#ufoColorPicker { width: 32px; height: 24px; border: none; background: none; cursor: pointer; }
+#musicButton { position: fixed; top: 115px; right: 18px; z-index: 20; padding: 12px 18px; border: 2px solid #36efff; border-radius: 10px; background: #08142b; color: white; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(54, 239, 255, .5); }
+#musicStatus { position: fixed; top: 162px; right: 18px; z-index: 20; color: #9eefff; font-size: 13px; text-align: right; }
 #fileInput { display: none; }
-
-/* ================= ẨN KHI CHƠI ================= */
-.gamePlaying #modeSelect,
-.gamePlaying #settingsRow,
-.gamePlaying #musicButton,
-.gamePlaying #musicStatus {
-  display: none;
-}
-
-/* ================= MOBILE ================= */
-@media(max-width:750px) {
-  #modeSelect { top: 5px; gap: 3px; flex-wrap: wrap; }
-  .modeButton { padding: 6px 7px; font-size: 9px; }
-  #settingsRow { top: 55px; gap: 5px; }
-  #speedMainBtn, #bgMainBtn { padding: 0 8px; font-size: 10px; height: 30px; }
-  #speedMenu { width: 180px; }
-  #bgMenu { width: 145px; }
-  .speedButton, .bgButton { padding: 4px 6px; font-size: 9px; }
-  .bgThumb { width: 22px; height: 14px; }
-  #colorSelectContainer { padding: 0 6px; height: 30px; }
-  .colorLabel { font-size: 10px; }
-  #ufoColorPicker { width: 24px; height: 18px; }
-  #musicButton { top: 100px; right: 8px; padding: 8px 10px; font-size: 12px; }
-  #musicStatus { top: 138px; right: 8px; font-size: 10px; }
-}
+.gamePlaying #modeSelect, .gamePlaying #settingsRow, .gamePlaying #musicButton, .gamePlaying #musicStatus { display: none; }
+#loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 8, 22, 0.95); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s;}
+#loadingOverlay.active { opacity: 1; pointer-events: all; }
+.loader-spinner { border: 6px solid #08142b; border-top: 6px solid #ff35dc; border-radius: 50%; width: 55px; height: 55px; animation: spin 1s linear infinite; margin-bottom: 25px; box-shadow: 0 0 15px rgba(255, 53, 220, 0.5);}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loader-text { color: #ff35dc; font-size: 22px; font-weight: bold; font-family: Arial; text-shadow: 0 0 10px rgba(255, 53, 220, 0.8); letter-spacing: 2px; }
+.loader-subtext { color: #9eefff; font-size: 14px; margin-top: 10px; font-family: Arial; }
+@media(max-width:750px) { #modeSelect { top: 5px; gap: 3px; flex-wrap: wrap; } .modeButton { padding: 6px 7px; font-size: 9px; } #settingsRow { top: 55px; gap: 5px; } #speedMainBtn, #bgMainBtn, #antiLagBtn { padding: 0 8px; font-size: 10px; height: 30px; } #speedMenu { width: 180px; } #bgMenu { width: 160px; } .speedButton, .bgButton { padding: 4px 6px; font-size: 9px; } .bgThumb { width: 20px; height: 14px; } #colorSelectContainer { padding: 0 6px; height: 30px; } .colorLabel { font-size: 10px; } #ufoColorPicker { width: 24px; height: 18px; } #musicButton { top: 100px; right: 8px; padding: 8px 10px; font-size: 12px; } #musicStatus { top: 138px; right: 8px; font-size: 10px; }}
 </style>
 </head>
 <body>
-
-<!-- MODE -->
-<div id="modeSelect">
-  <button class="modeButton active" data-mode="leftToRight">TRÁI → PHẢI</button>
-  <button class="modeButton" data-mode="rightToLeft">PHẢI → TRÁI</button>
-  <button class="modeButton" data-mode="reverseLeftToRight">NGƯỢC TRÁI → PHẢI</button>
-  <button class="modeButton" data-mode="reverseRightToLeft">NGƯỢC PHẢI → TRÁI</button>
+<div id="loadingOverlay"> <div class="loader-spinner"></div> <div class="loader-text">FAST MODE IS LOADING...</div> <div class="loader-subtext">Đang tối ưu hóa tài nguyên đồ họa. Không thể hoàn tác.</div></div>
+<div id="modeSelect"> <button class="modeButton active" data-mode="leftToRight">TRÁI → PHẢI</button> <button class="modeButton" data-mode="rightToLeft">PHẢI → TRÁI</button> <button class="modeButton" data-mode="reverseLeftToRight">NGƯỢC TRÁI → PHẢI</button> <button class="modeButton" data-mode="reverseRightToLeft">NGƯỢC PHẢI → TRÁI</button></div>
+<div id="settingsRow"> 
+  <div id="speedSelect"> 
+    <button id="speedMainBtn">⚡ TỐC ĐỘ: 1x ▾</button> 
+    <div id="speedMenu"> 
+      <button class="speedButton" data-speed="0.25">0.25x</button> 
+      <button class="speedButton" data-speed="0.5">0.5x</button> 
+      <button class="speedButton" data-speed="0.75">0.75x</button> 
+      <button class="speedButton active" data-speed="1">1x</button> 
+      <button class="speedButton" data-speed="1.25">1.25x</button> 
+      <button class="speedButton" data-speed="1.5">1.5x</button> 
+      <button class="speedButton" data-speed="1.75">1.75x</button> 
+      <button class="speedButton" data-speed="2">2x</button> 
+    </div> 
+  </div>
+  <div id="bgSelect"> 
+    <button id="bgMainBtn">🖼️ HÌNH NỀN ▾</button> 
+    <div id="bgMenu"> 
+      <button class="bgButton active" data-bg="default"> <div class="bgThumb thumbDefault"></div> <span class="bgName">Mặc định</span> <span class="bgLock"></span></button> 
+      <button class="bgButton" data-bg="stars"> <div class="bgThumb thumbStars"></div> <span class="bgName">Bầu trời sao</span> <span class="bgLock"></span></button> 
+      <button class="bgButton" data-bg="dynamic"> <div class="bgThumb thumbDynamic"></div> <span class="bgName">Chuyển tiếp</span> <span class="bgLock">🔒 300 Xu</span></button> 
+    </div> 
+  </div>
+  <div id="colorSelectContainer"> <span class="colorLabel">🎨 MÀU UFO:</span> <input type="color" id="ufoColorPicker" value="#ffd735"> </div> 
+  <button id="antiLagBtn">🚀 CHẾ ĐỘ MƯỢT: TẮT</button>
 </div>
-
-<!-- SETTINGS ROW: Tốc độ, Hình nền & Bảng màu -->
-<div id="settingsRow">
-  <!-- Tốc độ -->
-  <div id="speedSelect">
-    <button id="speedMainBtn">⚡ TỐC ĐỘ: 1x ▾</button>
-    <div id="speedMenu">
-      <button class="speedButton" data-speed="0.25">0.25x</button>
-      <button class="speedButton" data-speed="0.5">0.5x</button>
-      <button class="speedButton" data-speed="0.75">0.75x</button>
-      <button class="speedButton active" data-speed="1">1x</button>
-      <button class="speedButton" data-speed="1.25">1.25x</button>
-      <button class="speedButton" data-speed="1.5">1.5x</button>
-      <button class="speedButton" data-speed="1.75">1.75x</button>
-      <button class="speedButton" data-speed="2">2x</button>
-    </div>
-  </div>
-
-  <!-- Hình nền -->
-  <div id="bgSelect">
-    <button id="bgMainBtn">🖼️ HÌNH NỀN ▾</button>
-    <div id="bgMenu">
-      <button class="bgButton active" data-bg="default">
-        <div class="bgThumb thumbDefault"></div>
-        <span>Mặc định</span>
-      </button>
-      <button class="bgButton" data-bg="stars">
-        <div class="bgThumb thumbStars"></div>
-        <span>Bầu trời sao</span>
-      </button>
-      <button class="bgButton" data-bg="dynamic">
-        <div class="bgThumb thumbDynamic"></div>
-        <span>Chuyển tiếp</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Màu UFO -->
-  <div id="colorSelectContainer">
-    <span class="colorLabel">🎨 MÀU UFO:</span>
-    <input type="color" id="ufoColorPicker" value="#ffd735">
-  </div>
-</div>
-
-<!-- GAME -->
 <canvas id="game" width="1100" height="620"></canvas>
-
-<!-- MUSIC -->
-<button id="musicButton">🎵 BẬT NHẠC</button>
-<div id="musicStatus">Chơi chay (tối đa 500đ)</div>
-<input id="fileInput" type="file" accept="audio/*">
-<audio id="bgMusic" preload="auto"></audio>
+<button id="musicButton">🎵 BẬT NHẠC</button><div id="musicStatus">Chơi chay (tối đa 500đ)</div><input id="fileInput" type="file" accept="audio/*"><audio id="bgMusic" preload="auto"></audio>
 
 <script>
 const canvas = document.getElementById("game");
@@ -353,10 +89,14 @@ const musicButton = document.getElementById("musicButton");
 const musicStatus = document.getElementById("musicStatus");
 const fileInput = document.getElementById("fileInput");
 const bgMusic = document.getElementById("bgMusic");
+const loadingOverlay = document.getElementById("loadingOverlay");
 
 let state = "start";
 let score = 0;
+let coinsCollected = 0;
 let best = Number(localStorage.getItem("ufoBest") || 0);
+let totalCoins = Number(localStorage.getItem("ufoTotalCoins") || 0);
+let unlockedBgs = JSON.parse(localStorage.getItem("ufoUnlockedBgs")) || ["default", "stars"];
 let camera = 0;
 const MAX_SCORE_NO_MUSIC = 500;
 
@@ -367,541 +107,322 @@ const GRAVITY = 0.5; const JUMP_FORCE = 10;
 let gameMode = "leftToRight";
 let ufoColor = localStorage.getItem("ufoCustomColor") || "#ffd735";
 let bgType = localStorage.getItem("ufoBgType") || "default";
+if(!unlockedBgs.includes(bgType)) bgType = "default"; // Fallback nếu chưa mở
+let isAntiLag = false;
 
-// Mảng chứa các nền thay đổi
-const bgThemes = [
-  { name: "CYBERPUNK NEON", topColor: "#111d4a", bottomColor: "#050816", gridColor: "rgba(40,210,255,.12)", mountainColor: "#101735", mountainStroke: "#e45aff" },
-  { name: "DEEP SPACE", topColor: "#220033", bottomColor: "#020005", gridColor: "rgba(255,100,255,.12)", mountainColor: "#1a0026", mountainStroke: "#36efff" },
-  { name: "SYNTHWAVE SUNSET", topColor: "#4a0e2e", bottomColor: "#120216", gridColor: "rgba(255,180,40,.15)", mountainColor: "#210515", mountainStroke: "#ff35dc" },
+const bgThemes = [ 
+  { name: "CYBERPUNK NEON", topColor: "#111d4a", bottomColor: "#050816", gridColor: "rgba(40,210,255,.12)", mountainColor: "#101735", mountainStroke: "#e45aff" }, 
+  { name: "DEEP SPACE", topColor: "#220033", bottomColor: "#020005", gridColor: "rgba(255,100,255,.12)", mountainColor: "#1a0026", mountainStroke: "#36efff" }, 
+  { name: "SYNTHWAVE SUNSET", topColor: "#4a0e2e", bottomColor: "#120216", gridColor: "rgba(255,180,40,.15)", mountainColor: "#210515", mountainStroke: "#ff35dc" }, 
   { name: "MATRIX GRID", topColor: "#002b11", bottomColor: "#010d05", gridColor: "rgba(50,255,120,.12)", mountainColor: "#031c0d", mountainStroke: "#28ff85" }
 ];
 let currentBgIndex = 0;
-let dynamicBgStartTime = Date.now(); // Mốc thời gian đếm chuyển nền
+let dynamicBgStartTime = Date.now();
+
+let stars = [];
+for (let i = 0; i < 100; i++) { stars.push({ x: Math.random() * W, y: Math.random() * FLOOR, r: .5 + Math.random() * 1.8, s: .2 + Math.random() * 1, a: .25 + Math.random() * .7 }); }
+
+const ufo = { x: 180, y: 300, vy: 0, r: 18, rot: 0 };
+let obstacles = [];
+let coins = [];
+let particles = [];
+
+function setGameUI(){ if(state === "play"){ document.body.classList.add("gamePlaying"); }else{ document.body.classList.remove("gamePlaying"); }}
+function isRightToLeft(){ return (gameMode === "rightToLeft" || gameMode === "reverseRightToLeft"); }
+function isReverse(){ return (gameMode === "reverseLeftToRight" || gameMode === "reverseRightToLeft"); }
+
+function setupUfoForMode(){ if(!isRightToLeft()){ ufo.x = 180; } else { ufo.x = W - 180; } ufo.y = 300; ufo.vy = 0; ufo.rot = isReverse() ? Math.PI : 0; }
 
 const modeButtons = document.querySelectorAll(".modeButton");
+modeButtons.forEach(button=>{ button.addEventListener("click", e=>{ e.preventDefault(); e.stopPropagation(); if(state === "play") return; gameMode = button.dataset.mode; modeButtons.forEach(b=>{ b.classList.remove("active"); }); button.classList.add("active"); setupUfoForMode(); }); });
+
 const speedSelect = document.getElementById("speedSelect");
 const speedMainBtn = document.getElementById("speedMainBtn");
 const speedButtons = document.querySelectorAll(".speedButton");
+speedMainBtn.addEventListener("click", e=>{ e.preventDefault(); e.stopPropagation(); if(state === "play") return; bgSelect.classList.remove("open"); speedSelect.classList.toggle("open"); });
+speedButtons.forEach(button=>{ button.addEventListener("click", e=>{ e.preventDefault(); e.stopPropagation(); if(state === "play") return; speedMultiplier = Number(button.dataset.speed); speedButtons.forEach(b=>{ b.classList.remove("active"); }); button.classList.add("active"); speedMainBtn.textContent = `⚡ TỐC ĐỘ: ${button.dataset.speed}x ▾`; speedSelect.classList.remove("open"); }); });
 
 const bgSelect = document.getElementById("bgSelect");
 const bgMainBtn = document.getElementById("bgMainBtn");
 const bgButtons = document.querySelectorAll(".bgButton");
 
-const ufoColorPicker = document.getElementById("ufoColorPicker");
-ufoColorPicker.value = ufoColor;
-ufoColorPicker.addEventListener("input", (e) => {
-  ufoColor = e.target.value;
-  localStorage.setItem("ufoCustomColor", ufoColor);
-});
-
-// Khởi tạo các vì sao bay (khởi tạo 1 lần duy nhất để duy trì chuyển động liên tục)
-let stars = [];
-for (let i = 0; i < 100; i++) {
-  stars.push({ x: Math.random() * W, y: Math.random() * FLOOR, r: .5 + Math.random() * 1.8, s: .2 + Math.random() * 1, a: .25 + Math.random() * .7 });
-}
-
-const ufo = { x: 180, y: 300, vy: 0, r: 18, rot: 0 };
-let obstacles = [];
-let particles = [];
-
-function setGameUI(){
-  if(state === "play"){
-    document.body.classList.add("gamePlaying");
-  }else{
-    document.body.classList.remove("gamePlaying");
-  }
-}
-
-function isRightToLeft(){ return (gameMode === "rightToLeft" || gameMode === "reverseRightToLeft"); }
-function isReverse(){ return (gameMode === "reverseLeftToRight" || gameMode === "reverseRightToLeft"); }
-
-function setupUfoForMode(){
-  if(!isRightToLeft()){ ufo.x = 180; } else { ufo.x = W - 180; }
-  ufo.y = 300;
-  ufo.vy = 0;
-  ufo.rot = isReverse() ? Math.PI : 0;
-}
-
-modeButtons.forEach(button=>{
-  button.addEventListener("click", e=>{
-    e.preventDefault(); e.stopPropagation();
-    if(state === "play") return;
-    gameMode = button.dataset.mode;
-    modeButtons.forEach(b=>{ b.classList.remove("active"); });
-    button.classList.add("active");
-    setupUfoForMode();
-  });
-});
-
-// Tốc độ dropdown
-speedMainBtn.addEventListener("click", e=>{
-  e.preventDefault(); e.stopPropagation();
-  if(state === "play") return;
-  bgSelect.classList.remove("open");
-  speedSelect.classList.toggle("open");
-});
-
-speedButtons.forEach(button=>{
-  button.addEventListener("click", e=>{
-    e.preventDefault(); e.stopPropagation();
-    if(state === "play") return;
-    speedMultiplier = Number(button.dataset.speed);
-    speedButtons.forEach(b=>{ b.classList.remove("active"); });
-    button.classList.add("active");
-    speedMainBtn.textContent = `⚡ TỐC ĐỘ: ${button.dataset.speed}x ▾`;
-    speedSelect.classList.remove("open");
-  });
-});
-
-// Hình nền dropdown
-function updateBgUI() {
-  bgButtons.forEach(b => {
-    if(b.dataset.bg === bgType) {
-      b.classList.add("active");
-      bgMainBtn.innerHTML = `🖼️ NỀN: ${b.querySelector("span").textContent} ▾`;
-    } else {
-      b.classList.remove("active");
+function updateBgUI() { 
+  bgButtons.forEach(b => { 
+    const bg = b.dataset.bg;
+    const isUnlocked = unlockedBgs.includes(bg);
+    const lockSpan = b.querySelector(".bgLock");
+    
+    if (lockSpan) {
+      if (isUnlocked) {
+        lockSpan.textContent = "✓";
+        lockSpan.style.color = "#28ff85";
+      } else {
+        lockSpan.textContent = "🔒 300 Xu";
+        lockSpan.style.color = "#ffd700";
+      }
     }
-  });
+
+    if(bg === bgType) { 
+      b.classList.add("active"); 
+      bgMainBtn.innerHTML = `🖼️ NỀN: ${b.querySelector(".bgName").textContent} ▾`; 
+    } else { 
+      b.classList.remove("active"); 
+    } 
+  }); 
 }
 updateBgUI();
 
-bgMainBtn.addEventListener("click", e=>{
-  e.preventDefault(); e.stopPropagation();
-  if(state === "play") return;
-  speedSelect.classList.remove("open");
-  bgSelect.classList.toggle("open");
+bgMainBtn.addEventListener("click", e=>{ e.preventDefault(); e.stopPropagation(); if(state === "play") return; speedSelect.classList.remove("open"); bgSelect.classList.toggle("open"); });
+
+bgButtons.forEach(button=>{ 
+  button.addEventListener("click", e=>{ 
+    e.preventDefault(); e.stopPropagation(); 
+    if(state === "play") return; 
+    
+    const targetBg = button.dataset.bg;
+    
+    // Xử lý Mua / Mở khóa
+    if (!unlockedBgs.includes(targetBg)) {
+      if (targetBg === "dynamic") {
+        const COST = 300;
+        if (totalCoins >= COST) {
+          totalCoins -= COST;
+          localStorage.setItem("ufoTotalCoins", totalCoins);
+          unlockedBgs.push(targetBg);
+          localStorage.setItem("ufoUnlockedBgs", JSON.stringify(unlockedBgs));
+          alert("🎉 Chúc mừng! Bạn đã dùng 300 xu để mở khóa hình nền CHUYỂN TIẾP!");
+        } else {
+          alert(`❌ Bạn không đủ xu! Cần 300 xu để mở khóa (Hiện có: ${totalCoins} xu).`);
+          return;
+        }
+      }
+    }
+
+    bgType = targetBg; 
+    localStorage.setItem("ufoBgType", bgType); 
+    updateBgUI(); 
+    bgSelect.classList.remove("open"); 
+  }); 
 });
 
-bgButtons.forEach(button=>{
-  button.addEventListener("click", e=>{
-    e.preventDefault(); e.stopPropagation();
-    if(state === "play") return;
-    bgType = button.dataset.bg;
-    localStorage.setItem("ufoBgType", bgType);
-    updateBgUI();
-    bgSelect.classList.remove("open");
-  });
-});
+const ufoColorPicker = document.getElementById("ufoColorPicker");
+ufoColorPicker.value = ufoColor;
+ufoColorPicker.addEventListener("input", (e) => { ufoColor = e.target.value; localStorage.setItem("ufoCustomColor", ufoColor); });
 
-window.addEventListener("click", e=>{
-  if(!speedSelect.contains(e.target)){ speedSelect.classList.remove("open"); }
-  if(!bgSelect.contains(e.target)){ bgSelect.classList.remove("open"); }
-});
+const antiLagBtn = document.getElementById("antiLagBtn");
+antiLagBtn.addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); if(state === "play") return; if (isAntiLag) return; loadingOverlay.classList.add("active"); setTimeout(() => { isAntiLag = true; antiLagBtn.textContent = "🚀 CHẾ ĐỘ MƯỢT: BẬT (KHÓA)"; antiLagBtn.classList.add("active"); loadingOverlay.classList.remove("active"); }, 2500); });
+
+window.addEventListener("click", e=>{ if(!speedSelect.contains(e.target)){ speedSelect.classList.remove("open"); } if(!bgSelect.contains(e.target)){ bgSelect.classList.remove("open"); } });
 
 let musicURL = null; let musicSelected = false;
 musicButton.onclick = ()=>{ fileInput.click(); };
-fileInput.onchange = ()=>{
-  const file = fileInput.files[0];
-  if(!file) return;
-  if(!file.type.startsWith("audio/")){ musicStatus.textContent = "❌ File không phải nhạc"; return; }
-  if(musicURL){ URL.revokeObjectURL(musicURL); }
-  musicURL = URL.createObjectURL(file);
-  bgMusic.src = musicURL;
-  bgMusic.volume = .7;
-  musicSelected = true;
-  musicStatus.textContent = "🎵 " + file.name;
-  musicButton.textContent = "🎵 ĐÃ CHỌN NHẠC";
-};
+fileInput.onchange = ()=>{ const file = fileInput.files[0]; if(!file) return; if(!file.type.startsWith("audio/")){ musicStatus.textContent = "❌ File không phải nhạc"; return; } if(musicURL){ URL.revokeObjectURL(musicURL); } musicURL = URL.createObjectURL(file); bgMusic.src = musicURL; bgMusic.volume = .7; musicSelected = true; musicStatus.textContent = "🎵 " + file.name; musicButton.textContent = "🎵 ĐÃ CHỌN NHẠC"; };
 
-function playMusic(){
-  if(!musicSelected) return false;
-  bgMusic.pause();
-  bgMusic.currentTime = 0;
-  bgMusic.play().then(()=>{ setGameUI(); }).catch(()=>{ musicStatus.textContent = "⚠️ Hãy bấm lại để phát nhạc"; });
-  return true;
-}
-
+function playMusic(){ if(!musicSelected) return false; bgMusic.pause(); bgMusic.currentTime = 0; bgMusic.play().then(()=>{ setGameUI(); }).catch(()=>{ musicStatus.textContent = "⚠️ Hãy bấm lại để phát nhạc"; }); return true; }
 function stopMusic(){ if(musicSelected) bgMusic.pause(); }
 
-function winGame(){
-  if(state !== "play") return;
-  state = "win";
-  best = Math.max(best, score);
-  localStorage.setItem("ufoBest", best);
-  musicButton.textContent = "🎵 BẬT NHẠC";
-  if(musicSelected){
-    musicStatus.textContent = "🏆 Bài nhạc đã hết — BẠN THẮNG!";
-  } else {
-    musicStatus.textContent = "🏆 Đạt 500 điểm — BẠN THẮNG!";
-  }
-  setGameUI();
-}
-
+function winGame(){ if(state !== "play") return; state = "win"; best = Math.max(best, score); localStorage.setItem("ufoBest", best); musicButton.textContent = "🎵 BẬT NHẠC"; if(musicSelected){ musicStatus.textContent = "🏆 Bài nhạc đã hết — BẠN THẮNG!"; } else { musicStatus.textContent = "🏆 Đạt 500 điểm — BẠN THẮNG!"; } setGameUI(); }
 bgMusic.addEventListener("ended", winGame);
 
-function reset(){
-  state = "play";
-  score = 0;
-  camera = 0;
-  dynamicBgStartTime = Date.now(); // Reset mốc thời gian hình nền chuyển tiếp về lại ban đầu
-  setupUfoForMode();
-  obstacles = [];
+function reset(){ state = "play"; score = 0; coinsCollected = 0; camera = 0; dynamicBgStartTime = Date.now(); setupUfoForMode(); obstacles = []; coins = []; for(let i=0; i<300; i++){ const x = 650 + i * 300 + Math.random()*150; const y = 100 + Math.random()*300; const isSpike = Math.random() < .5; obstacles.push({ x: x, y: y, w: 55, h: 55, type: isSpike ? "spike" : "block" }); if(Math.random() < 0.7) { coins.push({ x: x + 100 + Math.random() * 50, y: 150 + Math.random() * 250, r: 12, collected: false }); } } particles = []; setGameUI(); }
 
-  for(let i=0; i<300; i++){
-    const x = 650 + i * 300 + Math.random()*150;
-    const y = 100 + Math.random()*300;
-    obstacles.push({ x: x, y: y, w: 55, h: 55, type: Math.random() < .5 ? "spike" : "block" });
-  }
-  particles = [];
-  setGameUI();
-}
+function flap(){ if(state === "start" || state === "dead" || state === "win"){ reset(); if(musicSelected){ playMusic(); } else { setGameUI(); } return; } ufo.vy = isReverse() ? JUMP_FORCE : -JUMP_FORCE; const effectDirection = isRightToLeft() ? 1 : -1; const verticalDirection = isReverse() ? -1 : 1; const numParticles = isAntiLag ? 1 : 7; for(let i=0; i<numParticles; i++){ particles.push({ x: ufo.x + effectDirection * 15, y: ufo.y + verticalDirection * (5 + Math.random()*10), vx: effectDirection * (2 + Math.random()*3), vy: verticalDirection * (1 + Math.random()*3), life: 30 + Math.random()*10, reversePhysics: isReverse() }); } }
 
-function flap(){
-  if(state === "start" || state === "dead" || state === "win"){
-    reset();
-    if(musicSelected){ playMusic(); } else { setGameUI(); }
-    return;
-  }
-  ufo.vy = isReverse() ? JUMP_FORCE : -JUMP_FORCE;
-  const effectDirection = isRightToLeft() ? 1 : -1;
-  const verticalDirection = isReverse() ? -1 : 1;
-  for(let i=0; i<7; i++){
-    particles.push({
-      x: ufo.x + effectDirection * 15,
-      y: ufo.y + verticalDirection * (5 + Math.random()*10),
-      vx: effectDirection * (2 + Math.random()*3),
-      vy: verticalDirection * (1 + Math.random()*3),
-      life: 30 + Math.random()*10,
-      reversePhysics: isReverse()
-    });
-  }
-}
-
-window.addEventListener("keydown", e=>{
-  if(e.code === "Space" || e.code === "ArrowUp"){ e.preventDefault(); flap(); }
-});
+window.addEventListener("keydown", e=>{ if(e.code === "Space" || e.code === "ArrowUp"){ e.preventDefault(); flap(); } });
 canvas.addEventListener("mousedown", e=>{ e.preventDefault(); flap(); });
 canvas.addEventListener("touchstart", e=>{ e.preventDefault(); flap(); }, { passive:false });
 
-function circleRect(cx, cy, r, rx, ry, rw, rh){
-  const nx = Math.max(rx, Math.min(cx, rx + rw));
-  const ny = Math.max(ry, Math.min(cy, ry + rh));
-  const dx = cx - nx; const dy = cy - ny;
-  return (dx*dx + dy*dy < r*r);
-}
+function circleRect(cx, cy, r, rx, ry, rw, rh){ const nx = Math.max(rx, Math.min(cx, rx + rw)); const ny = Math.max(ry, Math.min(cy, ry + rh)); const dx = cx - nx; const dy = cy - ny; return (dx*dx + dy*dy < r*r); }
+function circleCircle(x1, y1, r1, x2, y2, r2) { const dx = x1 - x2; const dy = y1 - y2; return (dx * dx + dy * dy < (r1 + r2) * (r1 + r2)); }
 
-function crash(){
-  if(state !== "play") return;
-  state = "dead";
-  stopMusic();
-  best = Math.max(best, score);
-  localStorage.setItem("ufoBest", best);
-  setGameUI();
+function crash(){ if(state !== "play") return; state = "dead"; stopMusic(); best = Math.max(best, score); localStorage.setItem("ufoBest", best); setGameUI(); const verticalDirection = isReverse() ? -1 : 1; const horizontalDirection = isRightToLeft() ? -1 : 1; const numCrashParticles = isAntiLag ? 5 : 30; for(let i=0; i<numCrashParticles; i++){ const angle = Math.random() * Math.PI * 2; const force = 3 + Math.random() * 7; particles.push({ x: ufo.x, y: ufo.y, vx: Math.cos(angle) * force * horizontalDirection, vy: Math.sin(angle) * force * verticalDirection, life: 50 + Math.random()*30, reversePhysics: isReverse() }); } }
 
-  const verticalDirection = isReverse() ? -1 : 1;
-  const horizontalDirection = isRightToLeft() ? -1 : 1;
-  for(let i=0; i<30; i++){
-    const angle = Math.random() * Math.PI * 2;
-    const force = 3 + Math.random() * 7;
-    particles.push({
-      x: ufo.x, y: ufo.y,
-      vx: Math.cos(angle) * force * horizontalDirection,
-      vy: Math.sin(angle) * force * verticalDirection,
-      life: 50 + Math.random()*30,
-      reversePhysics: isReverse()
-    });
-  }
-}
-
-function update(){
-  // Luôn giữ các ngôi sao bay liên tục bất kể trạng thái game
-  for (const s of stars) {
-    s.x -= s.s;
-    if (s.x < 0) { s.x = W; s.y = Math.random() * FLOOR; }
-  }
-
-  // Tự động chuyển đổi hình nền cứ mỗi 10 giây tính từ lúc chơi/reset lượt mới
-  if (bgType === "dynamic") {
-    const elapsedTime = Date.now() - dynamicBgStartTime;
-    currentBgIndex = Math.floor(elapsedTime / 10000) % bgThemes.length;
-  } else {
-    currentBgIndex = 0; // Mặc định là Cyberpunk
-  }
-
-  if(state !== "play"){
-    updateParticles();
-    return;
-  }
-
-  const timeScale = speedMultiplier;
-  const gameSpeed = BASE_SPEED * timeScale;
-  camera += gameSpeed;
-  score = Math.floor(camera / 100);
-
-  if(!musicSelected && score >= MAX_SCORE_NO_MUSIC){ winGame(); return; }
-
-  if(isReverse()){ ufo.vy -= GRAVITY * timeScale; } else { ufo.vy += GRAVITY * timeScale; }
-  ufo.y += ufo.vy * timeScale;
-
-  const tilt = Math.max(-.6, Math.min(.7, ufo.vy * .05));
-  if(isReverse()){
-    ufo.rot = isRightToLeft() ? Math.PI - tilt : Math.PI + tilt;
-  }else{
-    ufo.rot = isRightToLeft() ? -tilt : tilt;
-  }
-
-  if(ufo.y - ufo.r < CEILING || ufo.y + ufo.r > FLOOR){ crash(); }
-
-  for(const o of obstacles){
-    let sx = !isRightToLeft() ? ufo.x + (o.x - camera) : ufo.x - (o.x - camera);
-    if(sx < -100 || sx > W + 100) continue;
-    if(o.type === "block" && circleRect(ufo.x, ufo.y, ufo.r, sx, o.y, o.w, o.h)){ crash(); }
-    if(o.type === "spike" && circleRect(ufo.x, ufo.y, ufo.r, sx, o.y - o.h, o.w, o.h)){ crash(); }
-  }
+function update(){ 
+  for (const s of stars) { s.x -= s.s; if (s.x < 0) { s.x = W; s.y = Math.random() * FLOOR; } } 
+  if (bgType === "dynamic") { const elapsedTime = Date.now() - dynamicBgStartTime; currentBgIndex = Math.floor(elapsedTime / 10000) % bgThemes.length; } else { currentBgIndex = 0; } 
+  if(state !== "play"){ updateParticles(); return; } 
+  
+  const timeScale = speedMultiplier; const gameSpeed = BASE_SPEED * timeScale; camera += gameSpeed; 
+  score = Math.floor(camera / 100) + (coinsCollected * 5); 
+  
+  if(!musicSelected && score >= MAX_SCORE_NO_MUSIC){ winGame(); return; } 
+  if(isReverse()){ ufo.vy -= GRAVITY * timeScale; } else { ufo.vy += GRAVITY * timeScale; } 
+  ufo.y += ufo.vy * timeScale; 
+  
+  const tilt = Math.max(-.6, Math.min(.7, ufo.vy * .05)); 
+  if(isReverse()){ ufo.rot = isRightToLeft() ? Math.PI - tilt : Math.PI + tilt; } else{ ufo.rot = isRightToLeft() ? -tilt : tilt; } 
+  if(ufo.y - ufo.r < CEILING || ufo.y + ufo.r > FLOOR){ crash(); } 
+  
+  for(const o of obstacles){ 
+    let sx = !isRightToLeft() ? ufo.x + (o.x - camera) : ufo.x - (o.x - camera); 
+    if(sx < -100 || sx > W + 100) continue; 
+    if(o.type === "block" && circleRect(ufo.x, ufo.y, ufo.r, sx, o.y, o.w, o.h)){ crash(); } 
+    if(o.type === "spike" && circleRect(ufo.x, ufo.y, ufo.r, sx, o.y - o.h, o.w, o.h)){ crash(); } 
+  } 
+  
+  for(const c of coins){ 
+    if(c.collected) continue; 
+    let cx = !isRightToLeft() ? ufo.x + (c.x - camera) : ufo.x - (c.x - camera); 
+    if(cx < -100 || cx > W + 100) continue; 
+    if(circleCircle(ufo.x, ufo.y, ufo.r, cx, c.y, c.r)){ 
+      c.collected = true; 
+      coinsCollected++; 
+      totalCoins++; 
+      localStorage.setItem("ufoTotalCoins", totalCoins); 
+    } 
+  } 
   updateParticles();
 }
 
-function updateParticles(){
-  for(const p of particles){
-    p.x += p.vx; p.y += p.vy; p.vy += (p.reversePhysics ? -0.12 : 0.12); p.life--;
+function updateParticles(){ for(const p of particles){ p.x += p.vx; p.y += p.vy; p.vy += (p.reversePhysics ? -0.12 : 0.12); p.life--; } particles = particles.filter(p => p.life > 0); }
+
+function text(txt, x, y, size, color="#fff"){ ctx.save(); ctx.font = `bold ${size}px Arial`; ctx.textAlign = "center"; ctx.fillStyle = color; if(!isAntiLag){ ctx.shadowColor = color; ctx.shadowBlur = 15; } ctx.fillText(txt, x, y); ctx.restore(); }
+
+function drawBackground(){ 
+  if(bgType === "stars") { 
+    ctx.fillStyle = "#080b18"; ctx.fillRect(0, 0, W, H); 
+    for (const s of stars) { ctx.globalAlpha = s.a; ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill(); } 
+    ctx.globalAlpha = 1; ctx.fillStyle = "#10182d"; ctx.fillRect(0, FLOOR, W, H - FLOOR); ctx.fillStyle = "#36efff"; ctx.fillRect(0, FLOOR, W, 5); 
+  } else { 
+    const theme = bgThemes[currentBgIndex]; 
+    if(isAntiLag){ ctx.fillStyle = theme.topColor; } else { const gradient = ctx.createLinearGradient(0, 0, 0, H); gradient.addColorStop(0, theme.topColor); gradient.addColorStop(1, theme.bottomColor); ctx.fillStyle = gradient; } 
+    ctx.fillRect(0, 0, W, H); 
+    
+    if (bgType === "dynamic") { 
+      for (const s of stars) { ctx.globalAlpha = s.a; ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill(); } 
+      ctx.globalAlpha = 1; 
+    } 
+    
+    ctx.strokeStyle = theme.gridColor; ctx.lineWidth = 1; 
+    for(let x = -(camera % 60); x < W; x += 60){ ctx.beginPath(); ctx.moveTo(x, 40); ctx.lineTo(x, H); ctx.stroke(); } 
+    for(let y = 70; y < FLOOR; y += 45){ ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); } 
+    
+    const triangleWidth = 110; const bottomPeak = 390; const topPeak = 140; 
+    for(let i = -2; i < 15; i++){ 
+      const x = i * triangleWidth - (camera * .2 % triangleWidth); 
+      ctx.fillStyle = theme.mountainColor; ctx.beginPath(); ctx.moveTo(x, FLOOR); ctx.lineTo(x + triangleWidth / 2, bottomPeak); ctx.lineTo(x + triangleWidth, FLOOR); ctx.closePath(); ctx.fill(); 
+      ctx.save(); ctx.lineWidth = 3; ctx.strokeStyle = theme.mountainStroke; if(!isAntiLag){ ctx.shadowColor = theme.mountainStroke; ctx.shadowBlur = 12; } ctx.beginPath(); ctx.moveTo(x, FLOOR); ctx.lineTo(x + triangleWidth / 2, bottomPeak); ctx.lineTo(x + triangleWidth, FLOOR); ctx.closePath(); ctx.stroke(); ctx.restore(); 
+      ctx.fillStyle = theme.mountainColor; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + triangleWidth / 2, topPeak); ctx.lineTo(x + triangleWidth, 0); ctx.closePath(); ctx.fill(); 
+      ctx.save(); ctx.lineWidth = 3; ctx.strokeStyle = theme.mountainStroke; if(!isAntiLag){ ctx.shadowColor = theme.mountainStroke; ctx.shadowBlur = 12; } ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + triangleWidth / 2, topPeak); ctx.lineTo(x + triangleWidth, 0); ctx.closePath(); ctx.stroke(); ctx.restore(); 
+    } 
+    ctx.shadowBlur = 0; ctx.fillStyle = "#0c1428"; ctx.fillRect(0, FLOOR, W, H - FLOOR); ctx.fillStyle = "#36efff"; ctx.fillRect(0, FLOOR, W, 5); 
   }
-  particles = particles.filter(p => p.life > 0);
 }
 
-function text(txt, x, y, size, color="#fff"){
+function drawObstacles(){ 
+  for(const o of obstacles){ 
+    let sx = !isRightToLeft() ? ufo.x + (o.x - camera) : ufo.x - (o.x - camera); 
+    if(sx < -100 || sx > W + 100) continue; 
+    if(!isAntiLag){ ctx.shadowColor = "#ff28e7"; ctx.shadowBlur = 18; } 
+    ctx.fillStyle = "#ff35dc"; 
+    if(o.type === "block"){ ctx.fillRect(sx, o.y, o.w, o.h); ctx.fillStyle = "#ff9af2"; ctx.fillRect(sx+8, o.y+8, o.w-16, 7); ctx.fillStyle = "#a82391"; ctx.fillRect(sx+8, o.y+25, o.w-16, o.h-33); } 
+    if(o.type === "spike"){ ctx.beginPath(); ctx.moveTo(sx, o.y); ctx.lineTo(sx + o.w/2, o.y-o.h); ctx.lineTo(sx + o.w, o.y); ctx.closePath(); ctx.fill(); } 
+    ctx.shadowBlur = 0; 
+  }
+}
+
+function drawCoins(){ 
+  for(const c of coins){ 
+    if(c.collected) continue; 
+    let cx = !isRightToLeft() ? ufo.x + (c.x - camera) : ufo.x - (c.x - camera); 
+    if(cx < -100 || cx > W + 100) continue; 
+    ctx.save(); 
+    if(!isAntiLag){ ctx.shadowColor = "#ffd700"; ctx.shadowBlur = 12; } 
+    ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(cx, c.y, c.r, 0, Math.PI * 2); ctx.fill(); 
+    ctx.fillStyle = "#ffee66"; ctx.beginPath(); ctx.arc(cx, c.y, c.r - 4, 0, Math.PI * 2); ctx.fill(); 
+    ctx.fillStyle = "#b8860b"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("$", cx, c.y); 
+    ctx.restore(); 
+  }
+}
+
+function drawUfo(){ 
+  ctx.save(); ctx.translate(ufo.x, ufo.y); ctx.rotate(ufo.rot); 
+  if(isRightToLeft()){ ctx.scale(-1, 1); } 
+  if(!isAntiLag){ ctx.shadowColor = ufoColor; ctx.shadowBlur = 20; } 
+  ctx.fillStyle = "#eaffff"; ctx.beginPath(); ctx.ellipse(0, -5, 12, 8, 0, Math.PI, 0); ctx.fill(); 
+  ctx.fillStyle = ufoColor; ctx.beginPath(); ctx.ellipse(0, 4, 24, 9, 0, 0, Math.PI*2); ctx.fill(); 
+  ctx.fillStyle = "#ffef70"; for(let i=-1; i<=1; i++){ ctx.beginPath(); ctx.arc(i*8, 7, 3, 0, Math.PI*2); ctx.fill(); } 
+  ctx.restore();
+}
+
+function drawParticles(){ for(const p of particles){ ctx.globalAlpha = Math.max(0, p.life / 60); ctx.fillStyle = ufoColor; ctx.fillRect(p.x, p.y, 5, 5); } ctx.globalAlpha = 1; }
+
+function drawUI(){ 
+  ctx.fillStyle = "rgba(0,0,0,.45)"; ctx.fillRect(20, 20, 360, 135); 
+  ctx.fillStyle = "#fff"; ctx.font = "bold 22px Arial"; ctx.fillText("UFO DASH", 35, 46); 
+  
+  ctx.font = "14px Arial"; ctx.fillStyle = "#ffffff";
+  ctx.fillText("Điểm: " + score + "  |  Kỉ lục: " + best, 35, 68); 
+  
+  ctx.font = "bold 15px Arial"; ctx.fillStyle = "#ffd700"; 
+  ctx.fillText("🪙 Xu trận này: " + coinsCollected, 35, 90); 
+  
+  let modeName = ""; 
+  if(gameMode === "leftToRight") modeName = "TRÁI → PHẢI"; 
+  if(gameMode === "rightToLeft") modeName = "PHẢI → TRÁI"; 
+  if(gameMode === "reverseLeftToRight") modeName = "NGƯỢC TRÁI → PHẢI"; 
+  if(gameMode === "reverseRightToLeft") modeName = "NGƯỢC PHẢI → TRÁI"; 
+  
+  ctx.font = "bold 13px Arial"; ctx.fillStyle = "#36efff"; ctx.fillText("Chế độ: " + modeName, 35, 111); 
+  
+  let bgNameText = ""; 
+  if(bgType === "stars") bgNameText = "BẦU TRỜI SAO"; else if(bgType === "default") bgNameText = "CYBERPUNK NEON"; else if(bgType === "dynamic") bgNameText = bgThemes[currentBgIndex].name; 
+  ctx.font = "bold 12px Arial"; ctx.fillStyle = "#ffea00"; ctx.fillText("Nền: " + bgNameText, 35, 131); 
+
+  // BẢNG BỘ ĐẾM TỔNG SỐ XU
   ctx.save();
-  ctx.font = `bold ${size}px Arial`;
+  ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+  ctx.fillRect(W - 240, 20, 220, 48);
+  ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 2;
+  ctx.strokeRect(W - 240, 20, 220, 48);
+  ctx.font = "bold 16px Arial"; ctx.fillStyle = "#ffd700";
   ctx.textAlign = "center";
-  ctx.fillStyle = color;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 15;
-  ctx.fillText(txt, x, y);
+  ctx.fillText("🪙 TỔNG XU: " + totalCoins, W - 130, 50);
   ctx.restore();
+  
+  // Thanh tiến trình
+  ctx.fillStyle = "rgba(255,255,255,.2)"; ctx.fillRect(390, 30, 440, 10); 
+  let progress = 0; 
+  if(musicSelected && bgMusic.duration && isFinite(bgMusic.duration)){ progress = bgMusic.currentTime / bgMusic.duration; } 
+  else if(!musicSelected) { progress = score / MAX_SCORE_NO_MUSIC; } 
+  ctx.fillStyle = "#38efff"; ctx.fillRect(390, 30, 440 * Math.min(progress, 1), 10);
 }
 
-function drawBackground(){
-  if(bgType === "stars") {
-    // 1. Nền Bầu trời sao
-    ctx.fillStyle = "#080b18";
-    ctx.fillRect(0, 0, W, H);
-    
-    for (const s of stars) {
-      ctx.globalAlpha = s.a;
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    
-    ctx.fillStyle = "#10182d";
-    ctx.fillRect(0, FLOOR, W, H - FLOOR);
-    ctx.fillStyle = "#36efff";
-    ctx.fillRect(0, FLOOR, W, 5);
-
-  } else {
-    // 2. Nền Mặc định hoặc Chuyển tiếp
-    const theme = bgThemes[currentBgIndex];
-
-    const gradient = ctx.createLinearGradient(0, 0, 0, H);
-    gradient.addColorStop(0, theme.topColor);
-    gradient.addColorStop(1, theme.bottomColor);
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, W, H);
-
-    if (bgType === "dynamic") {
-      for (const s of stars) {
-        ctx.globalAlpha = s.a;
-        ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    ctx.strokeStyle = theme.gridColor;
-    ctx.lineWidth = 1;
-    for(let x = -(camera % 60); x < W; x += 60){
-      ctx.beginPath(); ctx.moveTo(x, 40); ctx.lineTo(x, H); ctx.stroke();
-    }
-    for(let y = 70; y < FLOOR; y += 45){
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-    }
-
-    const triangleWidth = 110;
-    const bottomPeak = 390;
-    const topPeak = 140;
-
-    for(let i = -2; i < 15; i++){
-      const x = i * triangleWidth - (camera * .2 % triangleWidth);
-
-      ctx.fillStyle = theme.mountainColor;
-      ctx.beginPath();
-      ctx.moveTo(x, FLOOR); ctx.lineTo(x + triangleWidth / 2, bottomPeak); ctx.lineTo(x + triangleWidth, FLOOR);
-      ctx.closePath(); ctx.fill();
-
-      ctx.save();
-      ctx.lineWidth = 3; ctx.strokeStyle = theme.mountainStroke; ctx.shadowColor = theme.mountainStroke; ctx.shadowBlur = 12;
-      ctx.beginPath();
-      ctx.moveTo(x, FLOOR); ctx.lineTo(x + triangleWidth / 2, bottomPeak); ctx.lineTo(x + triangleWidth, FLOOR);
-      ctx.closePath(); ctx.stroke();
-      ctx.restore();
-
-      ctx.fillStyle = theme.mountainColor;
-      ctx.beginPath();
-      ctx.moveTo(x, 0); ctx.lineTo(x + triangleWidth / 2, topPeak); ctx.lineTo(x + triangleWidth, 0);
-      ctx.closePath(); ctx.fill();
-
-      ctx.save();
-      ctx.lineWidth = 3; ctx.strokeStyle = theme.mountainStroke; ctx.shadowColor = theme.mountainStroke; ctx.shadowBlur = 12;
-      ctx.beginPath();
-      ctx.moveTo(x, 0); ctx.lineTo(x + triangleWidth / 2, topPeak); ctx.lineTo(x + triangleWidth, 0);
-      ctx.closePath(); ctx.stroke();
-      ctx.restore();
-    }
-    
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "#0c1428";
-    ctx.fillRect(0, FLOOR, W, H - FLOOR);
-    ctx.fillStyle = "#36efff";
-    ctx.fillRect(0, FLOOR, W, 5);
+function overlay(){ 
+  if(state === "start"){ 
+    ctx.fillStyle = "rgba(2,4,15,.7)"; ctx.fillRect(0, 0, W, H); 
+    text("UFO DASH", W/2, 160, 70, "#36efff"); 
+    text("Kỉ lục cao nhất: " + best, W/2, 205, 20, "#ffd700"); 
+    text("Thu thập đồng xu trên đường đi để tích lũy xu mua nền!", W/2, 240, 17, "#ffffff"); 
+    text("Bấm 🎵 BẬT NHẠC để thêm nhạc của bạn", W/2, 268, 17, "#9eefff"); 
+    text("SPACE / CLICK ĐỂ BẮT ĐẦU", W/2, 320, 24, "#ffffff"); 
+    text("Chơi không nhạc: Đạt 500 điểm = THẮNG", W/2, 380, 18, "#ff7bea"); 
+    text("Chơi có nhạc: Sống sót đến hết bài = THẮNG", W/2, 410, 18, "#ff7bea"); 
+  } 
+  if(state === "dead"){ 
+    ctx.fillStyle = "rgba(2,4,15,.72)"; ctx.fillRect(0, 0, W, H); 
+    text("CRASH!", W/2, 195, 65, "#ff36e7"); 
+    text("Điểm lượt này: " + score + " | Kỉ lục: " + best, W/2, 250, 22, "#ffffff"); 
+    text("🪙 Xu ăn được lượt này: +" + coinsCollected + " (Tổng: " + totalCoins + ")", W/2, 285, 20, "#ffd700"); 
+    text("CLICK HOẶC SPACE ĐỂ CHƠI LẠI", W/2, 335, 21, "#36efff"); 
+    if(musicSelected){ text("🎵 Nhạc sẽ trở lại 0:00", W/2, 375, 17, "#ffe13b"); } 
+  } 
+  if(state === "win"){ 
+    ctx.fillStyle = "rgba(2,4,15,.72)"; ctx.fillRect(0, 0, W, H); 
+    text("LEVEL COMPLETE!", W/2, 200, 52, "#36efff"); 
+    if(musicSelected){ text("🎵 BÀI NHẠC ĐÃ PHÁT HẾT!", W/2, 245, 24, "#ffe13b"); } 
+    else { text("🎉 BẠN ĐÃ ĐẠT 500 ĐIỂM!", W/2, 245, 24, "#ffe13b"); } 
+    text("Điểm tổng: " + score + " | Kỉ lục: " + best, W/2, 288, 22, "#ffffff"); 
+    text("🪙 Xu ăn được lượt này: +" + coinsCollected + " (Tổng: " + totalCoins + ")", W/2, 320, 20, "#ffd700"); 
+    text("CLICK HOẶC SPACE ĐỂ CHƠI LẠI", W/2, 370, 21, "#ff36e7"); 
   }
 }
 
-function drawObstacles(){
-  for(const o of obstacles){
-    let sx = !isRightToLeft() ? ufo.x + (o.x - camera) : ufo.x - (o.x - camera);
-    if(sx < -100 || sx > W + 100) continue;
+function draw(){ ctx.clearRect(0, 0, W, H); drawBackground(); drawObstacles(); drawCoins(); drawParticles(); drawUfo(); drawUI(); overlay(); }
 
-    ctx.shadowColor = "#ff28e7";
-    ctx.shadowBlur = 18;
-    ctx.fillStyle = "#ff35dc";
+function loop(){ update(); draw(); requestAnimationFrame(loop); }
 
-    if(o.type === "block"){
-      ctx.fillRect(sx, o.y, o.w, o.h);
-      ctx.fillStyle = "#ff9af2"; ctx.fillRect(sx+8, o.y+8, o.w-16, 7);
-      ctx.fillStyle = "#a82391"; ctx.fillRect(sx+8, o.y+25, o.w-16, o.h-33);
-    }
-    if(o.type === "spike"){
-      ctx.beginPath();
-      ctx.moveTo(sx, o.y); ctx.lineTo(sx + o.w/2, o.y-o.h); ctx.lineTo(sx + o.w, o.y);
-      ctx.closePath(); ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-  }
-}
-
-function drawUfo(){
-  ctx.save();
-  ctx.translate(ufo.x, ufo.y); ctx.rotate(ufo.rot);
-  if(isRightToLeft()){ ctx.scale(-1, 1); }
-  ctx.shadowColor = ufoColor; ctx.shadowBlur = 20;
-
-  ctx.fillStyle = "#eaffff";
-  ctx.beginPath(); ctx.ellipse(0, -5, 12, 8, 0, Math.PI, 0); ctx.fill();
-
-  ctx.fillStyle = ufoColor;
-  ctx.beginPath(); ctx.ellipse(0, 4, 24, 9, 0, 0, Math.PI*2); ctx.fill();
-
-  ctx.fillStyle = "#ffef70";
-  for(let i=-1; i<=1; i++){
-    ctx.beginPath(); ctx.arc(i*8, 7, 3, 0, Math.PI*2); ctx.fill();
-  }
-  ctx.restore();
-}
-
-function drawParticles(){
-  for(const p of particles){
-    ctx.globalAlpha = Math.max(0, p.life / 60);
-    ctx.fillStyle = ufoColor;
-    ctx.fillRect(p.x, p.y, 5, 5);
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawUI(){
-  ctx.fillStyle = "rgba(0,0,0,.35)";
-  ctx.fillRect(20, 20, 310, 115);
-
-  ctx.fillStyle = "#fff";
-  ctx.font = "bold 22px Arial";
-  ctx.fillText("UFO DASH", 35, 48);
-
-  ctx.font = "16px Arial";
-  ctx.fillText("Điểm: " + score + "   Kỷ lục: " + best, 35, 72);
-
-  let modeName = "";
-  if(gameMode === "leftToRight") modeName = "TRÁI → PHẢI";
-  if(gameMode === "rightToLeft") modeName = "PHẢI → TRÁI";
-  if(gameMode === "reverseLeftToRight") modeName = "NGƯỢC TRÁI → PHẢI";
-  if(gameMode === "reverseRightToLeft") modeName = "NGƯỢC PHẢI → TRÁI";
-
-  ctx.font = "bold 14px Arial";
-  ctx.fillStyle = "#36efff";
-  ctx.fillText("Chế độ: " + modeName, 35, 96);
-
-  let bgNameText = "";
-  if(bgType === "stars") bgNameText = "BẦU TRỜI SAO";
-  else if(bgType === "default") bgNameText = "CYBERPUNK NEON";
-  else if(bgType === "dynamic") bgNameText = bgThemes[currentBgIndex].name;
-
-  ctx.font = "bold 13px Arial";
-  ctx.fillStyle = "#ffea00";
-  ctx.fillText("Nền: " + bgNameText, 35, 118);
-
-  ctx.fillStyle = "rgba(255,255,255,.2)";
-  ctx.fillRect(350, 30, 500, 10);
-
-  let progress = 0;
-  if(musicSelected && bgMusic.duration && isFinite(bgMusic.duration)){
-    progress = bgMusic.currentTime / bgMusic.duration;
-  } else if(!musicSelected) {
-    progress = score / MAX_SCORE_NO_MUSIC;
-  }
-
-  ctx.fillStyle = "#38efff";
-  ctx.fillRect(350, 30, 500 * Math.min(progress, 1), 10);
-}
-
-function overlay(){
-  if(state === "start"){
-    ctx.fillStyle = "rgba(2,4,15,.7)"; ctx.fillRect(0, 0, W, H);
-    text("UFO DASH", W/2, 170, 70, "#36efff");
-    text("Chọn chế độ, tốc độ, hình nền & màu UFO phía trên", W/2, 230, 18, "#9eefff");
-    text("Bấm 🎵 BẬT NHẠC để thêm nhạc của bạn", W/2, 260, 18, "#9eefff");
-    text("SPACE / CLICK ĐỂ BẮT ĐẦU", W/2, 320, 24, "#ffffff");
-    text("Chơi không nhạc: Đạt 500 điểm = THẮNG", W/2, 380, 18, "#ff7bea");
-    text("Chơi có nhạc: Sống sót đến hết bài = THẮNG", W/2, 410, 18, "#ff7bea");
-  }
-  if(state === "dead"){
-    ctx.fillStyle = "rgba(2,4,15,.72)"; ctx.fillRect(0, 0, W, H);
-    text("CRASH!", W/2, 245, 65, "#ff36e7");
-    text("Điểm: " + score, W/2, 295, 24);
-    text("CLICK HOẶC SPACE ĐỂ CHƠI LẠI", W/2, 340, 21, "#36efff");
-    if(musicSelected){ text("🎵 Nhạc sẽ trở lại 0:00", W/2, 375, 17, "#ffe13b"); }
-  }
-  if(state === "win"){
-    ctx.fillStyle = "rgba(2,4,15,.72)"; ctx.fillRect(0, 0, W, H);
-    text("LEVEL COMPLETE!", W/2, 230, 52, "#36efff");
-    if(musicSelected){ text("🎵 BÀI NHẠC ĐÃ PHÁT HẾT!", W/2, 280, 25, "#ffe13b"); }
-    else { text("🎉 BẠN ĐÃ ĐẠT 500 ĐIỂM!", W/2, 280, 25, "#ffe13b"); }
-    text("Điểm: " + score, W/2, 320, 23);
-    text("CLICK HOẶC SPACE ĐỂ CHƠI LẠI", W/2, 365, 21, "#ff36e7");
-  }
-}
-
-function draw(){
-  ctx.clearRect(0, 0, W, H);
-  drawBackground();
-  drawObstacles();
-  drawParticles();
-  drawUfo();
-  drawUI();
-  overlay();
-}
-
-function loop(){
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-reset();
-state = "start";
-setGameUI();
-loop();
+reset(); state = "start"; setGameUI(); loop();
 </script>
 </body>
 </html>
