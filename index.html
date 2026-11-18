@@ -7,6 +7,7 @@
 <style>
 html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #050816; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; }
 canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18; cursor: pointer; }
+#bgVideo { display: none; }
 #modeSelect { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 7px; width: max-content; max-width: 96vw; justify-content: center; transition: .2s; }
 .modeButton { padding: 9px 12px; border: 2px solid #36efff; border-radius: 8px; background: #08142b; color: white; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(54, 239, 255, .35); transition: .15s; }
 .modeButton:hover { background: #12345a; }
@@ -20,7 +21,7 @@ canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18;
 #speedMenu, #bgMenu { display: none; position: absolute; top: 100%; margin-top: 6px; background: rgba(5, 12, 30, .96); border: 1px solid #36efff; border-radius: 8px; padding: 6px; box-shadow: 0 0 15px rgba(54, 239, 255, .3); gap: 5px; flex-wrap: wrap; justify-content: center; }
 #speedSelect.open #speedMenu, #bgSelect.open #bgMenu { display: flex; }
 #speedMenu { width: 220px; }
-#bgMenu { width: 200px; flex-direction: column; }
+#bgMenu { width: 210px; flex-direction: column; }
 .speedButton, .bgButton { padding: 6px 10px; border: 1px solid #36efff; border-radius: 5px; background: #08142b; color: white; font-size: 11px; font-weight: bold; cursor: pointer; transition: .12s; }
 .speedButton:hover, .bgButton:hover { background: #12345a; }
 .speedButton.active, .bgButton.active { background: #36efff; color: #050816; box-shadow: 0 0 7px #36efff; }
@@ -29,6 +30,7 @@ canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18;
 .thumbDefault { background: linear-gradient(180deg, #111d4a 0%, #050816 100%); }
 .thumbStars { background: #080b18; background-image: radial-gradient(#ffffff 1px, transparent 0); background-size: 5px 5px; }
 .thumbDynamic { background: linear-gradient(90deg, #111d4a 33%, #4a0e2e 33%, #4a0e2e 66%, #002b11 66%); }
+.thumbCustom { background: linear-gradient(135deg, #ff35dc, #36efff); }
 .bgName { font-size: 11px; flex-grow: 1; text-align: left; }
 .bgLock { font-size: 10px; font-weight: bold; }
 #colorSelectContainer { display: flex; align-items: center; gap: 8px; background: rgba(8, 20, 43, 0.9); padding: 0 12px; height: 38px; border: 2px solid #36efff; border-radius: 8px; box-shadow: 0 0 10px rgba(54, 239, 255, .35); box-sizing: border-box; }
@@ -36,7 +38,7 @@ canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18;
 #ufoColorPicker { width: 32px; height: 24px; border: none; background: none; cursor: pointer; }
 #musicButton { position: fixed; top: 115px; right: 18px; z-index: 20; padding: 12px 18px; border: 2px solid #36efff; border-radius: 10px; background: #08142b; color: white; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(54, 239, 255, .5); }
 #musicStatus { position: fixed; top: 162px; right: 18px; z-index: 20; color: #9eefff; font-size: 13px; text-align: right; }
-#fileInput { display: none; }
+#fileInput, #videoFileInput { display: none; }
 .gamePlaying #modeSelect, .gamePlaying #settingsRow, .gamePlaying #musicButton, .gamePlaying #musicStatus { display: none; }
 #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 8, 22, 0.95); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s;}
 #loadingOverlay.active { opacity: 1; pointer-events: all; }
@@ -44,7 +46,7 @@ canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18;
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .loader-text { color: #ff35dc; font-size: 22px; font-weight: bold; font-family: Arial; text-shadow: 0 0 10px rgba(255, 53, 220, 0.8); letter-spacing: 2px; }
 .loader-subtext { color: #9eefff; font-size: 14px; margin-top: 10px; font-family: Arial; }
-@media(max-width:750px) { #modeSelect { top: 5px; gap: 3px; flex-wrap: wrap; } .modeButton { padding: 6px 7px; font-size: 9px; } #settingsRow { top: 55px; gap: 5px; } #speedMainBtn, #bgMainBtn, #antiLagBtn { padding: 0 8px; font-size: 10px; height: 30px; } #speedMenu { width: 180px; } #bgMenu { width: 160px; } .speedButton, .bgButton { padding: 4px 6px; font-size: 9px; } .bgThumb { width: 20px; height: 14px; } #colorSelectContainer { padding: 0 6px; height: 30px; } .colorLabel { font-size: 10px; } #ufoColorPicker { width: 24px; height: 18px; } #musicButton { top: 100px; right: 8px; padding: 8px 10px; font-size: 12px; } #musicStatus { top: 138px; right: 8px; font-size: 10px; }}
+@media(max-width:750px) { #modeSelect { top: 5px; gap: 3px; flex-wrap: wrap; } .modeButton { padding: 6px 7px; font-size: 9px; } #settingsRow { top: 55px; gap: 5px; } #speedMainBtn, #bgMainBtn, #antiLagBtn { padding: 0 8px; font-size: 10px; height: 30px; } #speedMenu { width: 180px; } #bgMenu { width: 170px; } .speedButton, .bgButton { padding: 4px 6px; font-size: 9px; } .bgThumb { width: 20px; height: 14px; } #colorSelectContainer { padding: 0 6px; height: 30px; } .colorLabel { font-size: 10px; } #ufoColorPicker { width: 24px; height: 18px; } #musicButton { top: 100px; right: 8px; padding: 8px 10px; font-size: 12px; } #musicStatus { top: 138px; right: 8px; font-size: 10px; }}
 </style>
 </head>
 <body>
@@ -79,15 +81,18 @@ canvas { width: min(100vw, 1100px); aspect-ratio: 1100/620; background: #080b18;
        <button class="bgButton active" data-bg="default"> <div class="bgThumb thumbDefault"></div> <span class="bgName">Mặc định</span> <span class="bgLock"></span></button>
        <button class="bgButton" data-bg="stars"> <div class="bgThumb thumbStars"></div> <span class="bgName">Bầu trời sao</span> <span class="bgLock"></span></button>
        <button class="bgButton" data-bg="dynamic"> <div class="bgThumb thumbDynamic"></div> <span class="bgName">Chuyển tiếp</span> <span class="bgLock">🔒 300 Xu</span></button>
+       <button class="bgButton" data-bg="custom"> <div class="bgThumb thumbCustom"></div> <span class="bgName">Tự chọn (MP4)</span> <span class="bgLock">📁</span></button>
      </div>
    </div>
   <div id="colorSelectContainer"> <span class="colorLabel">🎨 MÀU UFO:</span> <input type="color" id="ufoColorPicker" value="#ffd735"> </div>
    <button id="antiLagBtn">🚀 CHẾ ĐỘ MƯỢT: TẮT</button>
 </div>
+<video id="bgVideo" autoplay loop muted playsinline></video>
 <canvas id="game" width="1100" height="620"></canvas>
 <button id="musicButton">🎵 BẬT NHẠC</button>
 <div id="musicStatus">Chơi chay (tối đa 500đ)</div>
 <input id="fileInput" type="file" accept="audio/*">
+<input id="videoFileInput" type="file" accept="video/mp4">
 <audio id="bgMusic" preload="auto"></audio>
 
 <script>
@@ -98,6 +103,8 @@ const W = 1100; const H = 620; const FLOOR = 530; const CEILING = 0;
 const musicButton = document.getElementById("musicButton");
 const musicStatus = document.getElementById("musicStatus");
 const fileInput = document.getElementById("fileInput");
+const videoFileInput = document.getElementById("videoFileInput");
+const bgVideo = document.getElementById("bgVideo");
 const bgMusic = document.getElementById("bgMusic");
 const loadingOverlay = document.getElementById("loadingOverlay");
 
@@ -117,7 +124,7 @@ const GRAVITY = 0.5; const JUMP_FORCE = 10;
 let gameMode = "leftToRight";
 let ufoColor = localStorage.getItem("ufoCustomColor") || "#ffd735";
 let bgType = localStorage.getItem("ufoBgType") || "default";
-if(!unlockedBgs.includes(bgType)) bgType = "default";
+if(!unlockedBgs.includes(bgType) && bgType !== "custom") bgType = "default";
 let isAntiLag = false;
 
 const bgThemes = [
@@ -159,11 +166,14 @@ const bgButtons = document.querySelectorAll(".bgButton");
 function updateBgUI() {
    bgButtons.forEach(b => {
      const bg = b.dataset.bg;
-     const isUnlocked = unlockedBgs.includes(bg);
+     const isUnlocked = unlockedBgs.includes(bg) || bg === "custom";
      const lockSpan = b.querySelector(".bgLock");
      
      if (lockSpan) {
-       if (isUnlocked) {
+       if (bg === "custom") {
+         lockSpan.textContent = "📁";
+         lockSpan.style.color = "#36efff";
+       } else if (isUnlocked) {
          lockSpan.textContent = "✓";
          lockSpan.style.color = "#28ff85";
        } else {
@@ -178,7 +188,7 @@ function updateBgUI() {
      } else { 
        b.classList.remove("active"); 
      } 
-   }); 
+   });
 }
 updateBgUI();
 
@@ -190,6 +200,12 @@ bgButtons.forEach(button=>{
      if(state === "play") return;
      
      const targetBg = button.dataset.bg;
+     
+     if (targetBg === "custom") {
+       videoFileInput.click();
+       bgSelect.classList.remove("open");
+       return;
+     }
      
      if (!unlockedBgs.includes(targetBg)) {
        if (targetBg === "dynamic") {
@@ -213,6 +229,21 @@ bgButtons.forEach(button=>{
      bgSelect.classList.remove("open"); 
    }); 
 });
+
+videoFileInput.onchange = () => {
+  const file = videoFileInput.files[0];
+  if (!file) return;
+  if (!file.type.startsWith("video/")) {
+    alert("❌ Vui lòng chọn file video định dạng MP4 hợp lệ!");
+    return;
+  }
+  const videoURL = URL.createObjectURL(file);
+  bgVideo.src = videoURL;
+  bgVideo.play().catch(err => console.log("Video play error:", err));
+  bgType = "custom";
+  localStorage.setItem("ufoBgType", bgType);
+  updateBgUI();
+};
 
 const ufoColorPicker = document.getElementById("ufoColorPicker");
 ufoColorPicker.value = ufoColor;
@@ -248,14 +279,13 @@ function crash(){ if(state !== "play") return; state = "dead"; stopMusic(); best
 
 function update(){
    for (const s of stars) { s.x -= s.s; if (s.x < 0) { s.x = W; s.y = Math.random() * FLOOR; } }
-   if (bgType === "dynamic") { const elapsedTime = Date.now() - dynamicBgStartTime; currentBgIndex = Math.floor(elapsedTime / 10000) % bgThemes.length; } else { currentBgIndex = 0; }
+   if (bgType === "dynamic") { const elapsedTime = Date.now() - dynamicBgStartTime; currentBgIndex = Math.floor(elapsedTime / 10000) % bgThemes.length; } else if(bgType !== "custom") { currentBgIndex = 0; }
    if(state !== "play"){ updateParticles(); return; }
    
    const timeScale = speedMultiplier; 
    const gameSpeed = BASE_SPEED * timeScale; 
    camera += gameSpeed;
    
-   // ĐIỂM CHỈ TÍNH BẰNG QUÃNG ĐƯỜNG BAY (Tăng dần khi bay xa, ăn coin KHÔNG cộng điểm)
    score = Math.floor(camera / 100);
    
    if(!musicSelected && score >= MAX_SCORE_NO_MUSIC){ winGame(); return; }
@@ -293,6 +323,12 @@ function updateParticles(){ for(const p of particles){ p.x += p.vx; p.y += p.vy;
 function text(txt, x, y, size, color="#fff"){ ctx.save(); ctx.font = `bold ${size}px Arial`; ctx.textAlign = "center"; ctx.fillStyle = color; if(!isAntiLag){ ctx.shadowColor = color; ctx.shadowBlur = 15; } ctx.fillText(txt, x, y); ctx.restore(); }
 
 function drawBackground(){
+   if (bgType === "custom" && bgVideo.readyState >= 2) {
+     ctx.drawImage(bgVideo, 0, 0, W, FLOOR);
+     ctx.fillStyle = "#0c1428"; ctx.fillRect(0, FLOOR, W, H - FLOOR);
+     ctx.fillStyle = "#36efff"; ctx.fillRect(0, FLOOR, W, 5);
+     return;
+   }
    if(bgType === "stars") {
      ctx.fillStyle = "#080b18"; ctx.fillRect(0, 0, W, H);
      for (const s of stars) { ctx.globalAlpha = s.a; ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill(); }
@@ -380,10 +416,9 @@ function drawUI(){
    ctx.font = "bold 13px Arial"; ctx.fillStyle = "#36efff"; ctx.fillText("Chế độ: " + modeName, 35, 111);
    
    let bgNameText = "";
-   if(bgType === "stars") bgNameText = "BẦU TRỜI SAO"; else if(bgType === "default") bgNameText = "CYBERPUNK NEON"; else if(bgType === "dynamic") bgNameText = bgThemes[currentBgIndex].name;
+   if(bgType === "stars") bgNameText = "BẦU TRỜI SAO"; else if(bgType === "default") bgNameText = "CYBERPUNK NEON"; else if(bgType === "dynamic") bgNameText = bgThemes[currentBgIndex].name; else if(bgType === "custom") bgNameText = "TỰ CHỌN (MP4)";
    ctx.font = "bold 12px Arial"; ctx.fillStyle = "#ffea00"; ctx.fillText("Nền: " + bgNameText, 35, 131); 
 
-  // BẢNG BỘ ĐẾM TỔNG SỐ XU
   ctx.save();
   ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
   ctx.fillRect(W - 240, 20, 220, 48);
@@ -394,7 +429,6 @@ function drawUI(){
   ctx.fillText("🪙 TỔNG XU: " + totalCoins, W - 130, 50);
   ctx.restore();
   
-  // Thanh tiến trình
   ctx.fillStyle = "rgba(255,255,255,.2)"; ctx.fillRect(390, 30, 440, 10);
    let progress = 0;
    if(musicSelected && bgMusic.duration && isFinite(bgMusic.duration)){ progress = bgMusic.currentTime / bgMusic.duration; }
